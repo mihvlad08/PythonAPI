@@ -1,16 +1,27 @@
-# This is a sample Python script.
+from flask import *
+import json, time
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+app = Flask(__name__)
+requests = 0
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+@app.route('/', methods=['GET'])
+def test_connection():
+    global requests
+    requests = requests + 1
+    data_set = {'Message': "You have successfully connected to the API!"}
+    json_dump = jsonify(data_set)
+    return data_set
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+@app.route('/admin', methods=['GET'])
+def admin():
+    global requests
+    data_set = {'Message': f"The API has handled {requests} requests so far."}
+    json_dump = jsonify(data_set)
+    return data_set
+
+
+if __name__ == "__main__":
+    app.debug = True
+    app.run(port=7777)
